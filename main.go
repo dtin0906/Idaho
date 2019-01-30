@@ -11,35 +11,36 @@ import (
 func main() {
 	//Init Router
 	r := mux.NewRouter()
+
 	//Mock Data - @todo -implement DB
-	// books = append(books, Book{ID: "1", Isbn: "448743", Title: "Book One", Author: &Author{Firstname: "John", Lastname: "Doe"}})
-	// books = append(books, Book{ID: "2", Isbn: "872632", Title: "Book Two", Author: &Author{Firstname: "Steve", Lastname: "Smith"}})
+	restaurants = append(restaurants, Restaurant{NAME: "Krung Thep Thai Cuisine", Price: "Low", Location: "366 Shoup Ave, Idaho Falls, ID 83402", Hours: &Hours{Monday: "11am - 9:30 pm", Tuesday: "11am - 9:30 pm", Wednesday: "11am - 9:30 pm", Thursday: "11am - 9:30 pm", Friday: "11am - 9:30 pm", Saturday: "11am - 9:30 pm", Sunday: "4:30pm - 9:30pm"}})
+	restaurants = append(restaurants, Restaurant{NAME: "The Healthier Place To Eat", Price: "Moderate", Location: "121 S Main St, Pocatello, ID 83204", Hours: &Hours{Monday: "11:30am - 8pm", Tuesday: "11:30am - 8pm", Wednesday: "11:30am - 8pm", Thursday: "11:30am - 8pm", Friday: "11:30am - 8pm", Saturday: "11:30am - 8pm", Sunday: "Closed On Sundays"}})
 	//Route Handlers
-	r.HandleFunc("api/restaurants", getRestaurants).Methods("GET")
-	r.HandleFunc("api/restaurants{name}", getRestaurant).Methods("GET")
-	r.HandleFunc("api/restaurants", createRestaurant).Methods("POST")
-	r.HandleFunc("api/restaurant/{name}", updateRestaurant).Methods("PUT")
-	r.HandleFunc("api/restaurants{name}", deleteRestaurant).Methods("DELETE")
+	r.HandleFunc("/idahoapi/restaurants", getRestaurants).Methods("GET")
+	r.HandleFunc("/idahoapi/restaurants{name}", getRestaurant).Methods("GET")
+	r.HandleFunc("/idahoapi/restaurants", createRestaurant).Methods("POST")
+	r.HandleFunc("/idahoapi/restaurant/{name}", updateRestaurant).Methods("PUT")
+	r.HandleFunc("/idahoapi/restaurants{name}", deleteRestaurant).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
 
 // Restaurant Struct
 type Restaurant struct {
 	NAME     string `json:"name"`
-	Price    string `json: "price"`
-	Location string `json: "location"`
-	Hours    *Hours `json: "hours"`
+	Price    string `json:"price"`
+	Location string `json:"location"`
+	Hours    *Hours `json:"hours"`
 }
 
 //Hours Struct
 type Hours struct {
-	Monday    string `json: "monday"`
-	Tuesday   string `json: "tuesday"`
-	Wednesday string `json: "wednesday"`
-	Thursday  string `json: "thursday"`
-	Friday    string `json: "friday"`
-	Saturday  string `json: "saturday"`
-	Sunday    string `json: "sunday"`
+	Monday    string `json:"monday"`
+	Tuesday   string `json:"tuesday"`
+	Wednesday string `json:"wednesday"`
+	Thursday  string `json:"thursday"`
+	Friday    string `json:"friday"`
+	Saturday  string `json:"saturday"`
+	Sunday    string `json:"sunday"`
 }
 
 var restaurants []Restaurant
@@ -50,7 +51,7 @@ func getRestaurants(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(restaurants)
 }
 
-// //Get A Restaurant
+//Get A Restaurant
 func getRestaurant(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r) // Get params
@@ -69,7 +70,7 @@ func getRestaurant(w http.ResponseWriter, r *http.Request) {
 // 	params := mux.Vars(r)
 // 	//for _, item := range restaurants {
 // 	switch item := range restaurants {
-// 	case item.name == params["NAME"]:
+// 	case item.NAME == params["name"]:
 // 		{
 // 			json.NewEncoder(w).Encode(item)
 // 			return
